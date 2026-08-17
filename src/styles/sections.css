@@ -1,0 +1,1060 @@
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  /* El header es fijo: el padding lo descuenta del centrado vertical. */
+  padding: var(--header-h) 0 5rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg-deep);
+  /* Aísla el repintado de las capas animadas del resto del documento. */
+  contain: strict;
+}
+
+/* Pared de ladrillo: textura tileada, atenuada hacia el centro */
+.hero-brick {
+  position: absolute;
+  inset: 0;
+  background-image: var(--brick);
+  opacity: 0.9;
+  mask-image: linear-gradient(100deg, #000 0%, #000 38%, transparent 72%);
+  -webkit-mask-image: linear-gradient(100deg, #000 0%, #000 38%, transparent 72%);
+}
+
+/* Nebulosa cósmica del lado derecho */
+.hero-cosmos {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 78% 28%, rgba(30, 136, 229, 0.4) 0%, transparent 62%),
+    radial-gradient(ellipse 40% 45% at 92% 62%, rgba(96, 60, 190, 0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 50% at 62% 88%, rgba(217, 119, 54, 0.22) 0%, transparent 68%),
+    linear-gradient(180deg, #0a1424 0%, #0d0d11 65%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 45%, #000 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%, #000 100%);
+}
+
+/* Campo de estrellas */
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 18% 22%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1px 1px at 32% 68%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 55% 14%, rgba(190, 220, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 68% 44%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 78% 18%, rgba(255, 245, 230, 0.9), transparent),
+    radial-gradient(1px 1px at 84% 72%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 91% 34%, rgba(190, 220, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 46% 86%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 72% 92%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 96% 8%, rgba(255, 255, 255, 0.7), transparent);
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Halos de color que respiran. El degradé radial reemplaza a filter: blur(90px):
+   da la misma suavidad sin obligar al compositor a re-rasterizar un buffer de
+   media pantalla en cada frame. Sólo se animan transform y opacity. */
+.hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+
+.hero-glow-amber {
+  width: 52vw;
+  height: 52vw;
+  left: -14vw;
+  bottom: -18vw;
+  background: radial-gradient(circle, rgba(217, 119, 54, 0.34) 0%, rgba(217, 119, 54, 0.12) 45%, transparent 70%);
+  animation: drift 14s ease-in-out infinite alternate;
+}
+
+.hero-glow-cyan {
+  width: 44vw;
+  height: 44vw;
+  right: 2vw;
+  top: -12vw;
+  background: radial-gradient(circle, rgba(30, 136, 229, 0.3) 0%, rgba(30, 136, 229, 0.1) 45%, transparent 70%);
+  animation: drift 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: translate3d(3vw, -3vw, 0) scale(1.12);
+    opacity: 1;
+  }
+}
+
+/* Foto del DJ, anclada a la derecha y fundida con el fondo */
+.hero-photo {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: -1;
+  width: 54%;
+  max-width: 780px;
+  pointer-events: none;
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 22%;
+  /* Una sola mask en diagonal: compone los dos desvanecidos (izquierda y
+     abajo) sin pagar el costo de mask-composite sobre dos capas. */
+  mask-image: linear-gradient(105deg, transparent 8%, #000 42%, #000 100%);
+  -webkit-mask-image: linear-gradient(105deg, transparent 8%, #000 42%, #000 100%);
+}
+
+.hero-inner {
+  position: relative;
+}
+
+.hero-content {
+  max-width: 620px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1rem 0.4rem 0.75rem;
+  border: 1px solid rgba(217, 119, 54, 0.4);
+  background: rgba(217, 119, 54, 0.1);
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+  margin-bottom: 1.75rem;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 0 var(--amber-glow);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 54, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(217, 119, 54, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 54, 0);
+  }
+}
+
+.hero-title {
+  margin-bottom: 1.25rem;
+}
+
+.hero-title-line {
+  display: block;
+  letter-spacing: 0.06em;
+  background: linear-gradient(180deg, #ffffff 20%, #b9bcc8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rise 0.9s var(--ease) both;
+}
+
+.hero-title-line:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(0.85rem, 2vw, 1.15rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  animation: rise 0.9s var(--ease) 0.24s both;
+}
+
+.hero-location {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.36em;
+  color: var(--amber);
+  margin-bottom: 2.75rem;
+  animation: rise 0.9s var(--ease) 0.34s both;
+}
+
+.hero-rule {
+  width: 52px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  flex: none;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  animation: rise 0.9s var(--ease) 0.44s both;
+}
+
+.hero-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--faint);
+}
+
+.hero-scroll svg {
+  width: 16px;
+  height: 16px;
+  animation: bob 2s ease-in-out infinite;
+}
+
+.hero-scroll:hover {
+  color: var(--amber);
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-photo {
+    width: 100%;
+    opacity: 0.4;
+  }
+
+  .hero-photo img {
+    object-position: 70% center;
+  }
+
+  .hero-brick,
+  .hero-cosmos {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .hero-cosmos {
+    opacity: 0.75;
+  }
+
+  .hero-content {
+    max-width: none;
+    text-align: center;
+  }
+
+  .hero-location,
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-rule {
+    display: none;
+  }
+}
+
+/* Notebooks de pantalla baja: el hero entra sin recortar los botones. */
+@media (max-height: 780px) and (min-width: 861px) {
+  .hero h1 {
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 1.1rem;
+  }
+
+  .hero-subtitle,
+  .hero-location {
+    margin-bottom: 1.4rem;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-subtitle {
+    letter-spacing: 0.24em;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   About
+   ========================================================================== */
+
+.section-about {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elevated) 100%);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-media {
+  position: relative;
+  padding: 0 2rem 2.5rem 0;
+}
+
+.about-photo {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 42% 20%;
+  transition: transform 0.6s var(--ease);
+}
+
+.about-media:hover .about-photo img {
+  transform: scale(1.04);
+}
+
+.about-photo-inset {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 46%;
+  border-color: var(--amber);
+}
+
+.about-photo-inset img {
+  aspect-ratio: 1 / 1;
+  object-position: 50% 18%;
+}
+
+/* Marco cyan desplazado, detrás de la foto principal */
+.about-frame {
+  position: absolute;
+  left: -1.25rem;
+  top: -1.25rem;
+  width: 55%;
+  height: 45%;
+  border: 1px solid var(--cyan);
+  border-right: none;
+  border-bottom: none;
+  border-radius: var(--radius) 0 0 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.about-body p {
+  margin-bottom: 1.15rem;
+  font-size: 1.02rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 2.25rem 0 1.75rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 620px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+  }
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--amber-bright), var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+}
+
+.about-signature {
+  font-size: 0.9rem;
+  color: var(--faint);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Music
+   ========================================================================== */
+
+.section-music {
+  position: relative;
+  background: var(--bg-elevated);
+}
+
+.section-music::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(30, 136, 229, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.section-music .container {
+  position: relative;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2.75rem;
+}
+
+.filter {
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.filter:hover {
+  color: var(--fg);
+  border-color: var(--border-strong);
+}
+
+.filter[data-active] {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #150c05;
+}
+
+.track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.track:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-strong);
+  background: var(--card-hover);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+}
+
+.track.is-playing {
+  border-color: var(--amber);
+  box-shadow: 0 20px 44px rgba(217, 119, 54, 0.18);
+}
+
+.track-art {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(140deg, var(--track-a), var(--track-b));
+  overflow: hidden;
+}
+
+/* Halo que sigue al hover, encima del degradé de la portada */
+.track-art-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.22), transparent 55%),
+    radial-gradient(circle at 80% 90%, rgba(0, 0, 0, 0.4), transparent 60%);
+  opacity: 0.9;
+  transition: transform 0.6s var(--ease);
+}
+
+.track:hover .track-art-glow {
+  transform: scale(1.15);
+}
+
+.track-category {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  padding: 0.25rem 0.7rem;
+  background: rgba(8, 8, 11, 0.82);
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fg);
+}
+
+.track-play {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(8, 8, 11, 0.6);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease),
+    border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.track-play svg {
+  width: 20px;
+  height: 20px;
+}
+
+.track-play:hover {
+  transform: scale(1.1);
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #150c05;
+  box-shadow: 0 0 30px var(--amber-glow);
+}
+
+.track-play-active {
+  display: none;
+}
+
+.track.is-playing .track-play {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #150c05;
+}
+
+.track.is-playing .track-play-idle {
+  display: none;
+}
+
+.track.is-playing .track-play-active {
+  display: block;
+}
+
+.track-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.35rem;
+  flex: 1;
+}
+
+.track-title {
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
+.track-meta {
+  font-size: 0.82rem;
+  color: var(--faint);
+}
+
+/* Onda de audio */
+.wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 40px;
+  margin: 0.6rem 0 0.35rem;
+  overflow: hidden;
+  /* --progress lo setea player.js; tiñe la parte ya reproducida */
+  --progress: 0%;
+}
+
+.wave-bar {
+  flex: 1;
+  min-width: 2px;
+  height: var(--h);
+  border-radius: 1px;
+  background: var(--border-strong);
+  /* scaleY en lugar de animar `height`: la altura dispara layout en cada frame
+     y hay ~260 barras en la grilla. transform corre en el compositor. */
+  transform-origin: bottom;
+  transition: background 0.2s var(--ease);
+}
+
+.track:hover .wave-bar {
+  background: #4a4a58;
+}
+
+.track.is-playing .wave-bar {
+  background: linear-gradient(180deg, var(--amber-bright), var(--amber));
+  animation: bounce 0.9s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -60ms);
+}
+
+@keyframes bounce {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0.45);
+  }
+}
+
+.track-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.track-duration {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.track-platforms {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.track-platform {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: all 0.22s var(--ease);
+}
+
+.track-platform svg {
+  width: 16px;
+  height: 16px;
+}
+
+.track-platform:hover {
+  color: var(--cyan-bright);
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+  transform: translateY(-2px);
+}
+
+/* Barra de progreso del player simulado */
+.track.is-playing::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: var(--progress, 0%);
+  background: linear-gradient(90deg, var(--amber), var(--amber-bright));
+  box-shadow: 0 0 12px var(--amber-glow);
+  transition: width 0.1s linear;
+}
+
+.music-empty {
+  text-align: center;
+  color: var(--faint);
+  padding: 2rem 0;
+}
+
+/* ==========================================================================
+   Events
+   ========================================================================== */
+
+.section-events {
+  position: relative;
+  background: var(--bg);
+}
+
+/* Ladrillo sin mask: una mask sobre un fondo tileado a esta escala obliga a
+   Chrome a mantener un buffer offscreen del alto de la sección en cada scroll.
+   El desvanecido se logra con un overlay de degradé, que es sólo pintura. */
+.section-events::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--brick);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.section-events::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%);
+  pointer-events: none;
+}
+
+.section-events .container {
+  position: relative;
+}
+
+.timeline {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
+  padding-left: 2.5rem;
+}
+
+/* Línea vertical que une los nodos */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--border-strong) 12%, var(--border-strong) 88%, transparent);
+}
+
+.event {
+  position: relative;
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  gap: 1.75rem;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s var(--ease), padding 0.3s var(--ease);
+}
+
+.event:last-child {
+  border-bottom: none;
+}
+
+.event:hover {
+  background: linear-gradient(90deg, rgba(217, 119, 54, 0.06), transparent 70%);
+}
+
+.event-node {
+  position: absolute;
+  left: calc(-2.5rem - 5px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--border-strong);
+  transition: all 0.3s var(--ease);
+}
+
+.event:hover .event-node {
+  border-color: var(--amber);
+  background: var(--amber);
+  box-shadow: 0 0 0 5px rgba(217, 119, 54, 0.16);
+}
+
+.event-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.7rem 0.5rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.3s var(--ease);
+}
+
+.event:hover .event-date {
+  border-color: var(--amber);
+}
+
+.event-day {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--fg);
+}
+
+.event-month {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--amber);
+  margin-top: 0.25rem;
+}
+
+.event-year {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+}
+
+.event-venue {
+  font-size: 1.15rem;
+  margin-bottom: 0.35rem;
+}
+
+.event-city {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--cyan-bright);
+  margin-bottom: 0.2rem;
+}
+
+.event-city svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.event-detail {
+  font-size: 0.85rem;
+  color: var(--faint);
+}
+
+.event.is-soldout .event-day,
+.event.is-soldout .event-venue {
+  color: var(--faint);
+}
+
+.events-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 2.5rem;
+  font-size: 0.9rem;
+  color: var(--faint);
+}
+
+.events-note svg {
+  width: 16px;
+  height: 16px;
+  color: var(--amber);
+  flex: none;
+}
+
+@media (max-width: 720px) {
+  .timeline {
+    padding-left: 1.75rem;
+  }
+
+  .event {
+    grid-template-columns: 68px 1fr;
+    gap: 1.1rem;
+    padding-right: 0;
+  }
+
+  .event-node {
+    left: calc(-1.75rem - 5px);
+  }
+
+  .event-action {
+    grid-column: 1 / -1;
+  }
+
+  .event-action .btn {
+    width: 100%;
+  }
+
+  .event-day {
+    font-size: 1.35rem;
+  }
+}
+
+/* ==========================================================================
+   Booking
+   ========================================================================== */
+
+.section-booking {
+  position: relative;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+}
+
+.section-booking::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 45% at 50% 100%, rgba(217, 119, 54, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.section-booking .container {
+  position: relative;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.booking-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.booking-card {
+  padding: 1.75rem;
+}
+
+.booking-card:hover {
+  border-color: var(--border-strong);
+}
+
+.booking-card-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--amber);
+  margin-bottom: 1rem;
+}
+
+.booking-email {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+  margin-bottom: 0.75rem;
+}
+
+.booking-note {
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.rider-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.rider-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.rider-list svg {
+  width: 15px;
+  height: 15px;
+  color: var(--cyan);
+  flex: none;
+}
