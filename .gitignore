@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.vite/
+
+# Screenshots y mockups de referencia, no van al repo
+Captura de pantalla*.png
+Gemini_Generated_Image*.jpg
